@@ -2,6 +2,8 @@ const Router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const User = require('./../model/User');
 const jwt = require('jsonwebtoken');
+const chalk = require('chalk');
+
 const registerValidation = require('./validation/registerValidation');
 const loginValidation = require('./validation/loginValidation');
 const meValidation = require('./validation/meValidation');
@@ -22,6 +24,7 @@ Router.get('/', (req,res)=>{
 
 
 Router.post('/auth/register',registerValidation.rules, registerValidation.nextMiddlware, (req,res)=>{
+     console.log(chalk.red.bold('Hitted'));
 
     User.findOne({ email: req.body.email }, (err, user)=>{
         if(err) throw err;
@@ -91,13 +94,14 @@ Router.get('/auth/me',meValidation.rules, meValidation.nextMiddlware, function(r
 */
 
 Router.post('/auth/login', loginValidation.rules, loginValidation.nextMiddlware ,(req,res)=>{
+     console.log(chalk.red.bold('Hitted'));
     User.findOne({ email: req.body.email }, (err,user)=>{
         if(err) res.status(401).send({ msg: 'Something went wrong' });
 
         if(user){
             bcrypt.compare(req.body.password, user.password, function(err, result) {
                 if(!result){
-                    res.staus(401).send({msg: 'Invalid username and password'});
+                    res.status(401).send({msg: 'Invalid username and password'});
                 }else{
                     var token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
                           expiresIn: 86400 // expires in 24 hours
