@@ -75,9 +75,11 @@ Router.get('/auth/me',meValidation.rules, meValidation.nextMiddlware, function(r
   jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
     if (err) return res.status(500).send({ status: false, message: 'Failed to authenticate token.' });
     
+    console.log(decoded);
+    
     User.findById(decoded.id, function (err, user) {
-      if (err) return res.status(500).send({status: false, msg: "There was a problem finding the user."});
-      if (!user) return res.status(404).send({status: false, msg: "No user found."});
+      if (err) return res.status(500).send({status: false, message: "There was a problem finding the user."});
+      if (!user) return res.status(401).send({status: false, message: "No user found."});
       
       res.status(200).send({ status: true, user: user});
     });
