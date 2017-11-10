@@ -10,6 +10,17 @@ Router.get('/', (req,res)=>{
     res.send({ 'msg': 'api working' });
 });
 
+/**
+*
+* {
+*   email: String,
+*   password: String,
+*   name: String
+* }
+* 
+*/
+
+
 Router.post('/auth/register',registerValidation.rules, registerValidation.nextMiddlware, (req,res)=>{
 
     User.findOne({ email: req.body.email }, (err, user)=>{
@@ -47,6 +58,12 @@ Router.post('/auth/register',registerValidation.rules, registerValidation.nextMi
 
 });
 
+/**
+*
+* Request Header: x-access-token
+* 
+*/
+
 
 Router.get('/auth/me',meValidation.rules, meValidation.nextMiddlware, function(req, res) {
   var token = req.headers['x-access-token'];
@@ -64,14 +81,23 @@ Router.get('/auth/me',meValidation.rules, meValidation.nextMiddlware, function(r
   });
 });
 
+/**
+*
+* {
+*   email: String,
+*   password: String
+* }
+* 
+*/
+
 Router.post('/auth/login', loginValidation.rules, loginValidation.nextMiddlware ,(req,res)=>{
     User.findOne({ email: req.body.email }, (err,user)=>{
-        if(err) res.status(500).send({ msg: 'Something went wrong' });
+        if(err) res.status(401).send({ msg: 'Something went wrong' });
 
         if(user){
             bcrypt.compare(req.body.password, user.password, function(err, result) {
                 if(!result){
-                    res.staus(401).send({msg: 'Username and password doesnot exists'});
+                    res.staus(401).send({msg: 'Invalid username and password'});
                 }else{
                     var token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
                           expiresIn: 86400 // expires in 24 hours
