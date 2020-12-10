@@ -3,3 +3,6 @@ services:
 - docker
 script:
 - echo "You shallnot pass"
+
+notifications:
+  email: false
