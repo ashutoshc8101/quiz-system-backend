@@ -4,7 +4,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # copy requirements
-COPY package.json /usr/src/app/
+COPY package*.json /usr/src/app/
 
 # install requirements
 RUN npm install
@@ -14,5 +14,5 @@ COPY . /usr/src/app
 
 EXPOSE 3000
 
-CMD [ "npm", "run" , "start" ]
+CMD [ "npm" , "run", "dev" ]
 

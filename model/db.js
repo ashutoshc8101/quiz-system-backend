@@ -5,8 +5,9 @@ const chalk = require('chalk');
 function connect() {
     require('dotenv').config();
     
-    const url = 'mongodb://' + process.env.MONGODB_USER + ':' + process.env.MONGODB_PASSWORD + '@' + process.env.MONGODB_URL;
-
+    // const url = 'mongodb://' + process.env.MONGODB_USER + ':' + process.env.MONGODB_PASSWORD + '@' + process.env.MONGODB_URL + '/' + process.env.MONGODB_DB;
+    const url = 'mongodb://mongo:27017/api-app'
+    console.log(`Mongodb url is : ${url}`)
     mongoose.connect(url , { useMongoClient : true });
     mongoose.Promise = global.Promise;
     mongoose.connection.once('open', ()=>{
