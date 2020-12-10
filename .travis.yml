@@ -2,6 +2,7 @@ language: bash
 sudo: required
 services:
 - docker
+- docker-compose
 
 script:
-- echo "Hello Travis"
+- sudo docker-compose up --build
