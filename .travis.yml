@@ -1,8 +1,5 @@
 language: bash
-sudo: required
 services:
 - docker
-- docker-compose
-
 script:
-- sudo docker-compose up --build
+- echo "You shallnot pass"
